@@ -13,18 +13,18 @@ jobs:
           java-version: 11
           java-package: jdk
       - name: checkout master
-        uses: klugem/actions_checkout@v2
+        uses: actions/checkout@v2
         with:
           ref: master
           path: master
       - name: checkout gh-pages
-        uses: klugem/actions_checkout@v2
+        uses: actions/checkout@v2
         with:
           ref: gh-pages
           path: gh-pages
           token: '${{ secrets.WATCHDOG_WMS_BOT_TOKEN }}'
       - name: checkout Watchdog
-        uses: klugem/actions_checkout@v2
+        uses: actions/checkout@v2
         with:
           ref: master
           path: watchdog
