@@ -134,6 +134,7 @@ foreach my $fFile (@fastqFiles) {
 	my $l; 
 	my $lSize = 0;
 	my $lc = 0;
+	my $stored = 0;
 
 	# check how big a file ending is (\n or \r\n)
 	if(defined($row = <$fh_fastq>)) {
@@ -178,6 +179,7 @@ foreach my $fFile (@fastqFiles) {
 				$pos = tell($fh_fastq);
 				$mappingStatus[$i] = [$pos-(length($id)+1)-$lSize, 0, $fcount];
 				$index{$id} = [$pos, $i, $fcount];
+				$stored++;
 			}
 			$i++;
 
@@ -191,7 +193,7 @@ foreach my $fFile (@fastqFiles) {
 			exitCode("EXIT_MISFORMATED_INPUT");
 		}
 	}
-	print "finished indexing of ".($lc/4)." reads for file '$fFile'!\n";
+	print "finished indexing of ".($lc/4)." reads for file '$fFile' (stored: ".$stored.")!\n";
 	$fcount++;
 }
 
@@ -230,7 +232,7 @@ $cc++;
 			$id = getReadIDWithSuffix($id, $flag);
 
 			# get sequence out of fastq file
-			if(exists $index{$id}) {
+			if(exists $index{$id} && $index{$id} != 1) {
 				@data = @{$index{$id}};
 				# select correct file handle
 				$fh_fastq = $fileHandles[$data[2]];
